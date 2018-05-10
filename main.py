@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 
+
 def get_fact():
 
     response = requests.get("http://unkno.com")
@@ -17,12 +18,20 @@ def get_fact():
     return facts[0].getText()
 
 
+def post_fact(text):
+    fact = requests.post("http://talkobamato.me/", data={'input_text': text})
+    return fact.url
+    
+
 @app.route('/')
 def home():
-    return "FILL ME!"
+    text = get_fact()
+    return post_fact(text)
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 6787))
     app.run(host='0.0.0.0', port=port)
+
+
 
